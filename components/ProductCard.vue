@@ -1,9 +1,11 @@
 <template>
   <div class="card text-center">
-    <img :src="product.image" alt="product thumb" class="thumb">
-    <p class="font-bold text-gray m-4 truncate">
-      {{ product.title }}
-    </p>
+    <div>
+      <img :src="product.image" alt="product thumb" class="thumb">
+      <p class="font-bold text-gray m-4 truncate">
+        {{ product.title }}
+      </p>
+    </div>
 
     <NuxtLink :to="`/products/${product.id}`">
       <p class="btn my-4">View Details</p>
