@@ -5,8 +5,8 @@ import { join } from 'path';
 import { mkdirSync } from 'fs';
 import { parentPort, threadId } from 'worker_threads';
 import { provider, isWindows } from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommerce%20Demo/node_modules/std-env/dist/index.mjs';
-import { createRenderer } from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommerce%20Demo/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { eventHandler, defineEventHandler, handleCacheHeaders, createEvent, createApp, createRouter, lazyEventHandler, getQuery } from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommerce%20Demo/node_modules/h3/dist/index.mjs';
+import { createRenderer } from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommerce%20Demo/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import devalue from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommerce%20Demo/node_modules/@nuxt/devalue/dist/devalue.mjs';
 import { renderToString } from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommerce%20Demo/node_modules/vue/server-renderer/index.mjs';
 import { parseURL, withQuery, joinURL } from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommerce%20Demo/node_modules/ufo/dist/index.mjs';
@@ -20,7 +20,7 @@ import { hash } from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommer
 import { createStorage } from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommerce%20Demo/node_modules/unstorage/dist/index.mjs';
 import unstorage_47drivers_47fs from 'file://C:/Users/Alex%20Cosmas/Desktop/Sandbox/Nuxt/ECommerce%20Demo/node_modules/unstorage/dist/drivers/fs.mjs';
 
-const _runtimeConfig = {"app":{"baseURL":"/","buildAssetsDir":"/_nuxt/","cdnURL":""},"nitro":{"routes":{},"envPrefix":"NUXT_"},"public":{}};
+const _runtimeConfig = {"app":{"baseURL":"/","buildAssetsDir":"/_nuxt/","cdnURL":""},"nitro":{"routes":{},"envPrefix":"NUXT_"},"public":{},"currencyKey":"0AREmTsGLjjsFEUgEb6kRUiLujDrPC9Sa8GOpDHQ"};
 const ENV_PREFIX = "NITRO_";
 const ENV_PREFIX_ALT = _runtimeConfig.nitro.envPrefix ?? process.env.NITRO_ENV_PREFIX ?? "_";
 const getEnv = (key) => {
@@ -363,9 +363,13 @@ const errorHandler = (async function errorhandler(error, event) {
   event.res.end(html);
 });
 
+const _lazy_KdbFMi = () => Promise.resolve().then(function () { return product$1; });
+const _lazy_CsQL3R = () => Promise.resolve().then(function () { return _code_$1; });
 const _lazy_q81f53 = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
+  { route: '/api/product', handler: _lazy_KdbFMi, lazy: true, middleware: false, method: undefined },
+  { route: '/api/currency/:code', handler: _lazy_CsQL3R, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_error', handler: _lazy_q81f53, lazy: true, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_q81f53, lazy: true, middleware: false, method: undefined }
 ];
@@ -442,6 +446,31 @@ server.listen(listenAddress, () => {
   process.on("unhandledRejection", (err) => console.error("[nitro] [dev] [unhandledRejection]", err));
   process.on("uncaughtException", (err) => console.error("[nitro] [dev] [uncaughtException]", err));
 }
+
+const product = defineEventHandler(async (event) => {
+  const { currencyKey } = useRuntimeConfig();
+  const uri = `https://api.currencyapi.com/v3/latest?currencies=${code}&apikey=${currencyKey}`;
+  const { data } = await $fetch(uri);
+  return data;
+});
+
+const product$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  'default': product
+});
+
+const _code_ = defineEventHandler(async (event) => {
+  const { code } = event.context.params;
+  const { currencyKey } = useRuntimeConfig();
+  const uri = `https://api.currencyapi.com/v3/latest?currencies=${code}&apikey=${currencyKey}`;
+  const { data } = await $fetch(uri);
+  return data;
+});
+
+const _code_$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  'default': _code_
+});
 
 function buildAssetsURL(...path) {
   return joinURL(publicAssetsURL(), useRuntimeConfig().app.buildAssetsDir, ...path);
